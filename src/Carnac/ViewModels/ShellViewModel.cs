@@ -13,6 +13,7 @@ using Carnac.Logic.Native;
 using Carnac.Models;
 using Message = Carnac.Models.Message;
 using Timer = System.Timers.Timer;
+using Carnac.Logger;
 
 namespace Carnac.ViewModels
 {
@@ -20,6 +21,9 @@ namespace Carnac.ViewModels
     public class ShellViewModel : Screen, IShell, IObserver<KeyPress>
     {
         IDisposable keySubscription;
+        
+        AbstractLogger logger;
+        IDisposable loggerSubscription;
 
         readonly ISettingsService settingsService;
 
@@ -86,12 +90,18 @@ namespace Carnac.ViewModels
 
         protected override void OnActivate()
         {
-            keySubscription = new KeyProvider(InterceptKeys.Current).Subscribe(this);
+            var provider = new KeyProvider(InterceptKeys.Current);
+            keySubscription = provider.Subscribe(this);
+            
+            logger = new FileSystemLogger("log.txt");
+            loggerSubscription = provider.Subscribe(logger);
         }
 
         protected override void OnDeactivate(bool close)
         {
             keySubscription.Dispose();
+            logger.Dispose();
+            loggerSubscription.Dispose();
         }
 
         public void OnNext(KeyPress value)

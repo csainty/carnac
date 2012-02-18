@@ -87,6 +87,8 @@
     <Compile Include="Analects\SettingService\SettingsService.cs" />
     <Compile Include="KeyMonitor\HotKey.cs" />
     <Compile Include="KeyMonitor\HotKeyWinApi.cs" />
+    <Compile Include="Logger\AbstractLogger.cs" />
+    <Compile Include="Logger\FileSystemLogger.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="ReplaceKey.cs" />
     <Compile Include="Utilities\ProcessUtilities.cs" />
